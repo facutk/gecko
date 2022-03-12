@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-env:
-  DOCKER_REPO: facutk/hello-html
 jobs:
   build:
     runs-on: ubuntu-latest

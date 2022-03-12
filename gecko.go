@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "net/http"
+    "strings"
 )
 
 func main() {
@@ -11,5 +12,7 @@ func main() {
 }
 
 func HelloServer(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+    str := r.URL.Path[1:]
+    upperStr := strings.ToUpper(str)
+    fmt.Fprintf(w, upperStr)
 }
