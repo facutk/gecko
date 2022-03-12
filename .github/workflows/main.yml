@@ -1,0 +1,23 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+env:
+  DOCKER_REPO: facutk/hello-html
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bump version and push tag
+        id: bump
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: false
+      - id: meta
+        run: echo "::set-output name=tags::${{ github.repository }}:latest,${{ github.repository }}:${{ steps.bump.outputs.new_tag }}"
+      - name: Print new tag
+        run: echo "${{ steps.meta.outputs.tags }}"
