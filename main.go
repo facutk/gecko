@@ -7,6 +7,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	"github.com/facutk/golaburo/api"
 )
 
 func main() {
@@ -21,6 +23,9 @@ func main() {
 
 	r.Get("/uppercase/{str}", getUppercaseHandler)
 	r.Get("/hits", getHitsHandler)
+	r.Get("/ping", api.GetPingHandler)
+	r.Get("/write/{str}", api.GetWriteHandler)
+	r.Get("/read", api.GetReadHandler)
 
 	http.ListenAndServe(":8080", r)
 }
@@ -32,6 +37,6 @@ func getUppercaseHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getHitsHandler(w http.ResponseWriter, r *http.Request) {
-	hits := fmt.Sprintf("%d", 0)
+	hits := fmt.Sprintf("%d", 1)
 	w.Write([]byte(hits))
 }

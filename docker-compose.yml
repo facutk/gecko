@@ -1,6 +1,11 @@
-version: "3"
+version: '3.8'
+
 services:
   gecko:
+    image: acim/go-reflex
+    environment:
+      - RACE_DETECTOR=1
+    volumes:
+      - .:/app
     ports:
       - 8080:8080
-    build: .
