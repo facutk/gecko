@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -22,10 +21,9 @@ func main() {
 	})
 
 	r.Get("/uppercase/{str}", getUppercaseHandler)
-	r.Get("/hits", getHitsHandler)
 	r.Get("/ping", api.GetPingHandler)
-	r.Get("/write/{str}", api.GetWriteHandler)
-	r.Get("/read", api.GetReadHandler)
+	r.Post("/note", api.NotePostHandler)
+	r.Get("/note", api.NoteGetHandler)
 
 	http.ListenAndServe(":8080", r)
 }
@@ -34,9 +32,4 @@ func getUppercaseHandler(w http.ResponseWriter, r *http.Request) {
 	str := chi.URLParam(r, "str")
 	upperStr := strings.ToUpper(str)
 	w.Write([]byte(upperStr))
-}
-
-func getHitsHandler(w http.ResponseWriter, r *http.Request) {
-	hits := fmt.Sprintf("%d", 1)
-	w.Write([]byte(hits))
 }
