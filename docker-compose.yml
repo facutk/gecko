@@ -7,5 +7,6 @@ services:
       - RACE_DETECTOR=1
     volumes:
       - .:/app
+      - .:/data
     ports:
       - 8080:8080

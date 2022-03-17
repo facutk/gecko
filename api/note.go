@@ -21,7 +21,7 @@ type Note struct {
 
 func NoteGetHandler(w http.ResponseWriter, r *http.Request) {
 	message := ""
-	dat, _ := os.ReadFile("./dat")
+	dat, _ := os.ReadFile("/data/dat")
 	message = string(dat)
 
 	n := Note{}
@@ -42,7 +42,7 @@ func NotePostHandler(w http.ResponseWriter, r *http.Request) {
 	check(err, w)
 
 	d1 := []byte(n.Message)
-	errWrite := os.WriteFile("./dat", d1, 0644)
+	errWrite := os.WriteFile("/data/dat", d1, 0644)
 	check(errWrite, w)
 
 	w.WriteHeader(200)
