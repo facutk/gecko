@@ -7,7 +7,7 @@ COPY . .
 # `-tags timetzdata` embeds zone info from the "time/tzdata" package.
 # RUN CGO_ENABLED=0 go install -ldflags '-extldflags "-static"' -tags timetzdata
 # RUN go get -d -v
-RUN CGO_ENABLED=0 go build -ldflags="-linkmode external -extldflags=-static" -tags osusergo,netgo,sqlite_omit_load_extension -o /go/bin/gecko main.go
+RUN go build -ldflags "-linkmode external -extldflags -static" -tags osusergo,netgo,sqlite_omit_load_extension -o /go/bin/gecko main.go
 
 FROM scratch
 
