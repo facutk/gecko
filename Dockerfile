@@ -1,5 +1,5 @@
 FROM golang:alpine as builder
-# RUN apk update && apk add --no-cache git libc6-compat
+RUN apk update && apk add --no-cache git libc6-compat
 
 WORKDIR $GOPATH/src/facutk/gecko/
 COPY . .
