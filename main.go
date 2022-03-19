@@ -30,6 +30,8 @@ func main() {
 	r.Post("/note", api.NotePostHandler)
 	r.Get("/note", api.NoteGetHandler)
 	r.Get("/sqlite", api.GetSqliteSchemaVersion)
+	r.Get("/v", api.GetMigrationVersion)
+	r.Get("/hits", api.GetHits)
 
 	http.ListenAndServe(":8080", r)
 }

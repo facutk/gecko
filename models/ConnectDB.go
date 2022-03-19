@@ -19,4 +19,6 @@ func ConnectDB() {
 
 	db = _db
 	log.Println("db: connected")
+
+	EnsureSchema(db)
 }
