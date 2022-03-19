@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"strings"
 
@@ -8,9 +9,13 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/facutk/golaburo/api"
+	"github.com/facutk/golaburo/models"
 )
 
 func main() {
+	log.Println("main: init")
+	models.ConnectDB()
+
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
@@ -24,6 +29,7 @@ func main() {
 	r.Get("/ping", api.GetPingHandler)
 	r.Post("/note", api.NotePostHandler)
 	r.Get("/note", api.NoteGetHandler)
+	r.Get("/sqlite", api.GetSqliteSchemaVersion)
 
 	http.ListenAndServe(":8080", r)
 }
