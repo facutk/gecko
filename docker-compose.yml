@@ -1,12 +1,24 @@
 version: '3.8'
 
 services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes: 
+      - .:/data
   gecko:
-    image: acim/go-reflex
-    environment:
-      - RACE_DETECTOR=1
     volumes:
       - .:/app
       - .:/data
+    depends_on:
+      - redis
     ports:
       - 8080:8080
+    image: acim/go-reflex      
+    environment:
+      RACE_DETECTOR: 1
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
