@@ -10,8 +10,8 @@ COPY . .
 # RUN CGO_ENABLED=1 GOOS=linux go build -ldflags "-linkmode external -extldflags -static" -tags osusergo,netgo,sqlite_omit_load_extension -o /go/bin/gecko main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -tags osusergo,netgo,sqlite_omit_load_extension -o /go/bin/gecko main.go
 
-# FROM scratch
-FROM alpine
+FROM scratch
+# FROM alpine
 
 COPY --from=builder /go/bin/gecko /go/bin/gecko
 
