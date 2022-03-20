@@ -10,12 +10,12 @@ import (
 )
 
 func GetRedisHandler(w http.ResponseWriter, r *http.Request) {
-	name := utils.Redis.Get("nn")
-	fmt.Fprint(w, name)
+	nn, _ := utils.Redis.Get("nn").Result()
+	fmt.Fprint(w, nn)
 }
 
 func GetRedisUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	utils.Redis.Set("nn", strconv.FormatFloat(rand.Float64(), 'E', -1, 32), 0)
-	name := utils.Redis.Get("nn")
-	fmt.Fprint(w, name)
+	nn, _ := utils.Redis.Get("nn").Result()
+	fmt.Fprint(w, nn)
 }
