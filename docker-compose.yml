@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  traefik:
+    image: traefik:v2.2
+    command: --providers.docker --entrypoints.web.address=:8080 --providers.docker.exposedbydefault=false
+    depends_on:
+      - gecko
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   redis:
     image: redis
     restart: always
@@ -15,9 +24,17 @@ services:
       - .:/data
     depends_on:
       - redis
-    ports:
-      - 8080:8080
-    image: acim/go-reflex      
+    expose:
+      - "8080"
+    image: acim/go-reflex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gecko.rule=PathPrefix(`/gecko`)"
+      - "traefik.http.routers.gecko.service=gecko"
+      - "traefik.http.services.gecko.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.gecko.stripprefix.prefixes=/gecko"
+      - "traefik.http.middlewares.gecko.stripprefix.forceslash=false"
+      - "traefik.http.routers.gecko.middlewares=gecko"
     environment:
       RACE_DETECTOR: 1
       REDIS_HOST: redis
