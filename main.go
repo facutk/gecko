@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/jwtauth/v5"
 
 	"github.com/facutk/golaburo/api"
 	"github.com/facutk/golaburo/models"
@@ -16,6 +17,7 @@ func main() {
 	log.Println("main: init")
 	models.ConnectDB()
 	utils.ConnectRedis()
+	utils.InitTokenAuth()
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -35,6 +37,14 @@ func main() {
 	r.Get("/hits", api.GetHits)
 	r.Get("/redis", api.GetRedisHandler)
 	r.Get("/redis/u", api.GetRedisUpdateHandler)
+	r.Get("/login", api.GetLoginHandler)
+
+	r.Group(func(r chi.Router) {
+		r.Use(jwtauth.Verifier(utils.TokenAuth))
+		r.Use(jwtauth.Authenticator)
+
+		r.Get("/admin", api.GetProtectedHandler)
+	})
 
 	http.ListenAndServe(":8080", r)
 }
