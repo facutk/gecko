@@ -1,3 +1,7 @@
+.env
 dat
+.foo.db-litestream
 foo.db
+foo.db-shm
+foo.db-wal
 dump.rdb
