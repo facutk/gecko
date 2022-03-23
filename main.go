@@ -17,14 +17,14 @@ import (
 )
 
 var dbFile = "/data/foo.db"
-var bucket = "gecko-foo"
+var bucket = utils.GetEnv("LITESTREAM_BUCKET", "")
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM)
 	defer stop()
 	log.Println("main: init")
-	models.ConnectDB(dbFile)
 	utils.Litestream(ctx, dbFile, bucket)
+	models.ConnectDB(dbFile)
 	utils.ConnectRedis()
 	utils.InitTokenAuth()
 
