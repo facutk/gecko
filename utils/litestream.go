@@ -8,18 +8,17 @@ import (
 
 	"github.com/benbjohnson/litestream"
 	lss3 "github.com/benbjohnson/litestream/s3"
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/facutk/golaburo/models"
 )
 
-func Litestream(ctx context.Context, dsn string, bucket string) error {
+func Litestream(ctx context.Context, dsn string, bucket string) (*litestream.DB, error) {
 	// Create a Litestream DB and attached replica to manage background replication.
+	log.Println("litestream: opening", dsn)
 	lsdb, err := replicate(ctx, dsn, bucket)
-	if err != nil {
-		return err
-	}
-	defer lsdb.SoftClose()
 
-	return nil
+	models.ConnectDB(dsn)
+
+	return lsdb, err
 }
 
 func replicate(ctx context.Context, dsn, bucket string) (*litestream.DB, error) {

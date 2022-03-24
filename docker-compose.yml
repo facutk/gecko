@@ -16,18 +16,16 @@ services:
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning
-    volumes: 
+    volumes:
       - .:/data
   gecko:
     volumes:
       - .:/app
-      - .:/data
+      - ./data:/data
     depends_on:
       - redis
     expose:
       - "8080"
-    # ports:
-    #   - "8080:8080"
     image: acim/go-reflex
     labels:
       - "traefik.enable=true"

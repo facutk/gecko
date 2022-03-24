@@ -12,7 +12,6 @@ import (
 	"github.com/go-chi/jwtauth/v5"
 
 	"github.com/facutk/golaburo/api"
-	"github.com/facutk/golaburo/models"
 	"github.com/facutk/golaburo/utils"
 )
 
@@ -20,11 +19,14 @@ var dbFile = "/data/foo.db"
 var bucket = utils.GetEnv("LITESTREAM_BUCKET", "")
 
 func main() {
+	log.Println("main: init")
+
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM)
 	defer stop()
-	log.Println("main: init")
-	utils.Litestream(ctx, dbFile, bucket)
-	models.ConnectDB(dbFile)
+
+	lsdb, _ := utils.Litestream(ctx, dbFile, bucket)
+	defer lsdb.SoftClose()
+
 	utils.ConnectRedis()
 	utils.InitTokenAuth()
 
