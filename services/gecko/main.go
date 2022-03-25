@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/jwtauth/v5"
 
-	"github.com/facutk/golaburo/api"
+	"github.com/facutk/golaburo/routes"
 	"github.com/facutk/golaburo/utils"
 )
 
@@ -39,23 +39,23 @@ func main() {
 		w.Write([]byte("golang"))
 	})
 
-	r.Get("/uppercase/{str}", api.GetUppercaseHandler)
-	r.Get("/ping", api.GetPingHandler)
-	r.Post("/note", api.NotePostHandler)
-	r.Get("/note", api.NoteGetHandler)
-	r.Get("/sqlite", api.GetSqliteSchemaVersion)
-	r.Get("/v", api.GetMigrationVersion)
-	r.Get("/hits", api.GetHits)
-	r.Get("/redis", api.GetRedisHandler)
-	r.Get("/redis/u", api.GetRedisUpdateHandler)
-	r.Get("/login", api.GetLoginHandler)
-	r.Get("/env", api.GetEnv)
+	r.Get("/uppercase/{str}", routes.GetUppercaseHandler)
+	r.Get("/ping", routes.GetPingHandler)
+	r.Post("/note", routes.NotePostHandler)
+	r.Get("/note", routes.NoteGetHandler)
+	r.Get("/sqlite", routes.GetSqliteSchemaVersion)
+	r.Get("/v", routes.GetMigrationVersion)
+	r.Get("/hits", routes.GetHits)
+	r.Get("/redis", routes.GetRedisHandler)
+	r.Get("/redis/u", routes.GetRedisUpdateHandler)
+	r.Get("/login", routes.GetLoginHandler)
+	r.Get("/env", routes.GetEnv)
 
 	r.Group(func(r chi.Router) {
 		r.Use(jwtauth.Verifier(utils.TokenAuth))
 		r.Use(jwtauth.Authenticator)
 
-		r.Get("/admin", api.GetProtectedHandler)
+		r.Get("/admin", routes.GetProtectedHandler)
 	})
 
 	http.ListenAndServe(":8080", r)

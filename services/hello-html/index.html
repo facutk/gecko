@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body onload="getNote()">
+    <h2>hello uppercase</h2>
+    <form onsubmit="toUppercase(event)">
+      <input type="text" placeholder="word" id="word">
+      <input type="submit" value="To uppercase">
+    </form>
+
+    <h2>note</h2>
+    <form onsubmit="setNote(event)">
+      <input type="text" placeholder="note" id="note">
+      <input type="submit" value="Save">
+    </form>
+    <script>
+      function toUppercase(e) {
+        e.preventDefault()
+        const str = document.querySelector('#word').value
+        fetch(`/gecko/uppercase/${str}`).then(r => r.text()).then(alert)
+      }
+
+      function setNote(e) {
+        e.preventDefault()
+        const note = document.querySelector('#note').value
+        fetch(`/gecko/note`, {
+          method: 'POST',
+          body: JSON.stringify({
+            message: note
+          })
+        });
+      }
+
+      function getNote() {
+        fetch(`/gecko/note`).then(r => r.json()).then(note => {
+          document.querySelector('#note').value = note.message
+        })
+      }
+    </script>
+  </body>
+</html>

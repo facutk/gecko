@@ -10,6 +10,7 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
   redis:
     image: redis
     restart: always
@@ -18,10 +19,11 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes:
       - .:/data
+
   gecko:
     volumes:
-      - .:/app
-      - ./data:/data
+      - ./services/gecko:/app
+      - ../services/gecko/data:/data
     depends_on:
       - redis
     expose:
