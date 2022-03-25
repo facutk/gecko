@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - id: meta
-        run: echo "::set-output name=tags::gecko:latest,gecko:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
+      # - id: meta
+      #   run: echo "::set-output name=tags::gecko:latest,gecko:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -31,4 +31,4 @@ jobs:
           file: services/gecko/Dockerfile
           context: ./services/gecko
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: gecko:latest,gecko:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)
