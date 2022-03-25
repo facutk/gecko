@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - services/gecko/**
+      - .github/workflows/gecko.yml
 
 jobs:
   build:
