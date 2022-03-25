@@ -28,6 +28,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: services/gecko
+          context: "{{defaultContext}}:services/gecko"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
