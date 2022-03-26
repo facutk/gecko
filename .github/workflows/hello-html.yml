@@ -23,9 +23,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push the Docker image
-        run: |
-          cd services/hello-html
-          docker build . --tag ghcr.io/${{ github.actor }}/hello-world:latest
-          docker push ghcr.io/${{ github.actor }}/hello-html:latest
-          docker push ghcr.io/${{ github.actor }}/hello-html::0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)
+      - id: meta
+        run: echo "::set-output name=tags::hello-html:latest,hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./services/hello-html
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
