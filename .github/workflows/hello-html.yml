@@ -18,7 +18,8 @@ jobs:
       - name: copy file
         uses: canastro/copy-file-action@master
         with:
-          source: services/hello-html/*
+          flags: -a
+          source: ./services/hello-html/.
           target: .
       - name: Login to DockerHub
         uses: docker/login-action@v1
