@@ -25,6 +25,7 @@ jobs:
 
       - name: Build and push the Docker image
         run: |
-          docker build -f ./services/hello-html --tag ghcr.io/${{ github.actor }}/hello-world:latest
+          cd services/hello-html
+          docker build . --tag ghcr.io/${{ github.actor }}/hello-world:latest
           docker push ghcr.io/${{ github.actor }}/hello-html:latest
           docker push ghcr.io/${{ github.actor }}/hello-html::0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)
