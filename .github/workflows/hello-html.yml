@@ -28,7 +28,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - id: meta
-        run: echo "::set-output name=tags::hello-html:latest,hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
+        run: echo "::set-output name=tags::facutk/hello-html:latest,facutk/hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
 
       - name: Build and push
         uses: docker/build-push-action@v2
