@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-html
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-html
+  template:
+    metadata:
+      labels:
+        app: hello-html
+    spec:
+      containers:
+      - name: hello-html
+        image: ghcr.io/facutk/hello-html:0.0.20220327180357-227f30f # {"$imagepolicy": "flux-system:hello-html"}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

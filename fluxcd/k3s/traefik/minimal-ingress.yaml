@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: default-mw-admin@kubernetescrd
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /gecko
+            pathType: Prefix
+            backend:
+              service:
+                name: gecko
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-html
+                port:
+                  number: 80

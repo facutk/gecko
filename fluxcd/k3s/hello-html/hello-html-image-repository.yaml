@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: hello-html
+  namespace: flux-system
+spec:
+  image: ghcr.io/facutk/hello-html
+  interval: 1m0s
