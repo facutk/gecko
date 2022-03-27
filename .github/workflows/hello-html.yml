@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-#    permissions:
-#      packages: write
     steps:
       - uses: actions/checkout@v2
 
@@ -25,15 +23,8 @@ jobs:
           username: ${{ github.repository_owner}}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-#       - name: Login to DockerHub
-#         uses: docker/login-action@v1
-#         with:
-#           username: ${{ secrets.DOCKER_USER }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-
       - id: meta
         run: echo "::set-output name=tags::ghcr.io/facutk/hello-html:latest,ghcr.io/facutk/hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
-#        run: echo "::set-output name=tags::facutk/hello-html:latest,facutk/hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
 
       - name: Build and push
         uses: docker/build-push-action@v2
