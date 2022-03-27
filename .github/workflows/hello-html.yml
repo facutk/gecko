@@ -34,7 +34,7 @@ jobs:
 #          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - id: meta
-run: echo "::set-output name=tags::ghcr.io/facutk/hello-html:latest,gchr.io/facutk/hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
+        run: echo "::set-output name=tags::ghcr.io/facutk/hello-html:latest,gchr.io/facutk/hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
 #        run: echo "::set-output name=tags::facutk/hello-html:latest,facutk/hello-html:0.0.$(date +'%Y%m%d%H%m%S')-$(git rev-parse --short HEAD)"
 
       - name: Build and push
