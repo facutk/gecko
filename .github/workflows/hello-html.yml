@@ -33,6 +33,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
+          load: true
           context: ./services/hello-html
           file: services/hello-html/Dockerfile
           push: true
