@@ -14,43 +14,43 @@ spec:
         app: gecko
     spec:
       volumes:
-        - name: volv
-          persistentVolumeClaim:
-            claimName: local-path-pvc
+      - name: volv
+        persistentVolumeClaim:
+          claimName: local-path-pvc
       containers:
-        - name: gecko
-          image: ghcr.io/facutk/gecko:0.0.20220327180350-227f30f # {"$imagepolicy": "flux-system:gecko"}
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "10m"
-            limits:
-              memory: "128Mi"
-              cpu: "250m"
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: volv
-              mountPath: /data
-          env:
-            - name: REDIS_HOST
-              value: redis
-            - name: REDIS_PORT
-              value: "6379"
-            - name: LITESTREAM_BUCKET
-              value: gecko-3307a2f2be95
-            - name: LITESTREAM_PATH
-              value: prod
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: aws-keys
-                  key: AWS_ACCESS_KEY_ID
-                  optional: false
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: aws-keys
-                  key: AWS_SECRET_ACCESS_KEY
-                  optional: false
-          ports:
-            - containerPort: 8080
+      - name: gecko
+        image: ghcr.io/facutk/gecko:0.0.20220329010301-ff1e6e3 # {"$imagepolicy": "flux-system:gecko"}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: volv
+          mountPath: /data
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: LITESTREAM_BUCKET
+          value: gecko-3307a2f2be95
+        - name: LITESTREAM_PATH
+          value: prod
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-keys
+              key: AWS_ACCESS_KEY_ID
+              optional: false
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-keys
+              key: AWS_SECRET_ACCESS_KEY
+              optional: false
+        ports:
+        - containerPort: 8080
