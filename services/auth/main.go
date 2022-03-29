@@ -20,6 +20,10 @@ func main() {
 		w.Write([]byte("auth"))
 	})
 
+	r.Get("/login", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("login"))
+	})
+
 	http.ListenAndServe(":8080", r)
 
 	log.Print("auth: received signal, shutting down")
