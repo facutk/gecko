@@ -11,23 +11,24 @@ import (
 	"github.com/facutk/golaburo/models"
 )
 
-func Litestream(ctx context.Context, dsn string, bucket string) (*litestream.DB, error) {
+func Litestream(ctx context.Context, dsn string, bucket string, path string) (*litestream.DB, error) {
 	// Create a Litestream DB and attached replica to manage background replication.
 	log.Println("litestream: opening", dsn)
-	lsdb, err := replicate(ctx, dsn, bucket)
+	lsdb, err := replicate(ctx, dsn, bucket, path)
 
 	models.ConnectDB(dsn)
 
 	return lsdb, err
 }
 
-func replicate(ctx context.Context, dsn, bucket string) (*litestream.DB, error) {
+func replicate(ctx context.Context, dsn, bucket string, path string) (*litestream.DB, error) {
 	// Create Litestream DB reference for managing replication.
 	lsdb := litestream.NewDB(dsn)
 
 	// Build S3 replica and attach to database.
 	client := lss3.NewReplicaClient()
 	client.Bucket = bucket
+	client.Path = path
 
 	replica := litestream.NewReplica(lsdb, "s3")
 	replica.Client = client

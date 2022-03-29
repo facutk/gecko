@@ -16,7 +16,8 @@ import (
 )
 
 var dbFile = "/data/foo.db"
-var bucket = utils.GetEnv("LITESTREAM_BUCKET", "")
+var litestream_bucket = utils.GetEnv("LITESTREAM_BUCKET", "")
+var litestream_path = utils.GetEnv("LITESTREAM_PATH", "")
 
 func main() {
 	log.Println("main: init")
@@ -24,7 +25,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM)
 	defer stop()
 
-	lsdb, _ := utils.Litestream(ctx, dbFile, bucket)
+	lsdb, _ := utils.Litestream(ctx, dbFile, litestream_bucket, litestream_path)
 	defer lsdb.SoftClose()
 
 	utils.ConnectRedis()
