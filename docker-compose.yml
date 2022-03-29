@@ -47,3 +47,20 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       LITESTREAM_BUCKET: ${LITESTREAM_BUCKET}
       LITESTREAM_PATH: ${LITESTREAM_PATH}
+
+  auth:
+    volumes:
+      - ./services/auth:/app
+    expose:
+      - "8080"
+    image: acim/go-reflex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/auth`)"
+      - "traefik.http.routers.auth.service=auth"
+      - "traefik.http.services.auth.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.auth.stripprefix.prefixes=/auth"
+      - "traefik.http.middlewares.auth.stripprefix.forceslash=false"
+      - "traefik.http.routers.auth.middlewares=auth"
+    environment:
+      RACE_DETECTOR: 1
