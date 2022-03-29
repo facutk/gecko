@@ -43,19 +43,19 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: aws-keys
+                  name: gecko-secrets
                   key: AWS_ACCESS_KEY_ID
                   optional: false
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: aws-keys
+                  name: gecko-secrets
                   key: AWS_SECRET_ACCESS_KEY
                   optional: false
             - name: FOO
               valueFrom:
                 secretKeyRef:
                   name: gecko-secrets
-                  key: foo
+                  key: FOO
           ports:
             - containerPort: 8080
