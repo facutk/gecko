@@ -1,5 +1,6 @@
 version: '3.8'
-
+volumes:
+  go-modules: # Define the volume
 services:
   traefik:
     image: traefik:v2.2
@@ -23,7 +24,8 @@ services:
   gecko:
     volumes:
       - ./services/gecko:/app
-      - ../services/gecko/data:/data
+      - ./services/gecko/data:/data
+      - go-modules:/go/pkg/mod # Put modules cache into a separate volume
     depends_on:
       - redis
     expose:
@@ -43,4 +45,5 @@ services:
       REDIS_PORT: 6379
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      LITESTREAM_BUCKET: gecko-foo-dev
+      LITESTREAM_BUCKET: ${LITESTREAM_BUCKET}
+      LITESTREAM_PATH: ${LITESTREAM_PATH}
