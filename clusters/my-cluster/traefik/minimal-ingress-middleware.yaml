@@ -7,4 +7,5 @@ spec:
   stripPrefix:
     forceSlash: false
     prefixes:
+      - /auth
       - /gecko

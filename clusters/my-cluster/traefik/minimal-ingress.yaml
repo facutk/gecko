@@ -11,6 +11,13 @@ spec:
   rules:
     - http:
         paths:
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth
+                port:
+                  number: 80
           - path: /gecko
             pathType: Prefix
             backend:
