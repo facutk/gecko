@@ -3,25 +3,47 @@ volumes:
   go-modules: # Define the volume
 services:
   traefik:
-    image: traefik:v2.2
-    command: --providers.docker --entrypoints.web.address=:8080 --providers.docker.exposedbydefault=false
-    depends_on:
-      - gecko
+    image: traefik:v2.3
+    restart: always
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:8080"
     ports:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=false"
 
-  redis:
-    image: redis
+  whoami:
+    image: containous/whoami:latest
     restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning
-    volumes:
-      - .:/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Path(`/whoami`)
+
+  html:
+    build:
+      context: ./services/hello-html
+      dockerfile: Dockerfile
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.html.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.html.service=html"
+      - "traefik.http.services.html.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.html.stripprefix.prefixes=/"
+      - "traefik.http.middlewares.html.stripprefix.forceslash=false"
+      - "traefik.http.routers.html.middlewares=html"
+    expose:
+      - "8080"
 
   gecko:
+    build:
+      context: ./services/gecko
+      dockerfile: ./Dockerfile.dev
+    restart: always
     volumes:
       - ./services/gecko:/app
       - ./services/gecko/data:/data
@@ -30,7 +52,6 @@ services:
       - redis
     expose:
       - "8080"
-    image: acim/go-reflex
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gecko.rule=PathPrefix(`/gecko`)"
@@ -46,14 +67,18 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       LITESTREAM_BUCKET: ${LITESTREAM_BUCKET}
-      LITESTREAM_PATH: ${LITESTREAM_PATH}
+      LITESTREAM_PATH: ${LITESTREAM_PATH_GECKO}
+      DB_PATH: ${DB_PATH_GECKO}
 
   auth:
+    build:
+      context: ./services/auth
+      dockerfile: ./Dockerfile.dev
+    restart: always
     volumes:
       - ./services/auth:/app
-    expose:
-      - "8080"
-    image: acim/go-reflex
+      - ./services/auth/data:/data
+      - go-modules:/go/pkg/mod # Put modules cache into a separate volume
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.rule=PathPrefix(`/auth`)"
@@ -62,5 +87,20 @@ services:
       - "traefik.http.middlewares.auth.stripprefix.prefixes=/auth"
       - "traefik.http.middlewares.auth.stripprefix.forceslash=false"
       - "traefik.http.routers.auth.middlewares=auth"
+    expose:
+      - "8080"
     environment:
-      RACE_DETECTOR: 1
+      LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      LITESTREAM_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      LITESTREAM_BUCKET: ${LITESTREAM_BUCKET}
+      LITESTREAM_PATH: ${LITESTREAM_PATH_AUTH}
+      DB_PATH: ${DB_PATH_AUTH}
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - .:/data

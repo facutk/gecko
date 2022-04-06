@@ -36,26 +36,40 @@ spec:
               value: redis
             - name: REDIS_PORT
               value: "6379"
+            - name: DB_PATH
+              valueFrom:
+                secretKeyRef:
+                  name: sops-secrets
+                  key: DB_PATH_GECKO
+                  optional: false
             - name: LITESTREAM_BUCKET
-              value: gecko-3307a2f2be95
+              valueFrom:
+                secretKeyRef:
+                  name: sops-secrets
+                  key: LITESTREAM_BUCKET
+                  optional: false
             - name: LITESTREAM_PATH
-              value: prod
+              valueFrom:
+                secretKeyRef:
+                  name: sops-secrets
+                  key: LITESTREAM_PATH_GECKO
+                  optional: false
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: gecko-secrets
+                  name: sops-secrets
                   key: AWS_ACCESS_KEY_ID
                   optional: false
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: gecko-secrets
+                  name: sops-secrets
                   key: AWS_SECRET_ACCESS_KEY
                   optional: false
             - name: FOO
               valueFrom:
                 secretKeyRef:
-                  name: gecko-secrets
+                  name: sops-secrets
                   key: FOO
           ports:
             - containerPort: 8080

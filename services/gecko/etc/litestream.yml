@@ -1,0 +1,11 @@
+access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
+secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
+dbs:
+  - path: ${DB_PATH}
+    replicas:
+      - type: s3
+        bucket: ${LITESTREAM_BUCKET}
+        path: ${LITESTREAM_PATH}
+        force-path-style: true
+        retention: 72h
+        snapshot-interval: 24h
