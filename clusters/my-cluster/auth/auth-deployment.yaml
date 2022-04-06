@@ -14,62 +14,62 @@ spec:
         app: auth
     spec:
       volumes:
-        - name: volv
-          persistentVolumeClaim:
-            claimName: local-path-pvc
+      - name: volv
+        persistentVolumeClaim:
+          claimName: local-path-pvc
       containers:
-        - name: auth
-          image: ghcr.io/facutk/auth:0.0.20220329200331-6b6ac03 # {"$imagepolicy": "flux-system:auth"}
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "10m"
-            limits:
-              memory: "64Mi"
-              cpu: "25m"
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: volv
-              mountPath: /data
-          env:
-            - name: REDIS_HOST
-              value: redis
-            - name: REDIS_PORT
-              value: "6379"
-            - name: DB_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: DB_PATH_AUTH
-                  optional: false
-            - name: LITESTREAM_BUCKET
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: LITESTREAM_BUCKET
-                  optional: false
-            - name: LITESTREAM_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: LITESTREAM_PATH_AUTH
-                  optional: false
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: AWS_ACCESS_KEY_ID
-                  optional: false
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: AWS_SECRET_ACCESS_KEY
-                  optional: false
-            - name: FOO
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: FOO
-          ports:
-            - containerPort: 8080
+      - name: auth
+        image: ghcr.io/facutk/auth:0.0.20220406030452-595af4a # {"$imagepolicy": "flux-system:auth"}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "64Mi"
+            cpu: "25m"
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: volv
+          mountPath: /data
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: DB_PATH
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: DB_PATH_AUTH
+              optional: false
+        - name: LITESTREAM_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: LITESTREAM_BUCKET
+              optional: false
+        - name: LITESTREAM_PATH
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: LITESTREAM_PATH_AUTH
+              optional: false
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: AWS_ACCESS_KEY_ID
+              optional: false
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: AWS_SECRET_ACCESS_KEY
+              optional: false
+        - name: FOO
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: FOO
+        ports:
+        - containerPort: 8080

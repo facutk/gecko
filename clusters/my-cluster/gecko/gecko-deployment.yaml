@@ -14,62 +14,62 @@ spec:
         app: gecko
     spec:
       volumes:
-        - name: volv
-          persistentVolumeClaim:
-            claimName: local-path-pvc
+      - name: volv
+        persistentVolumeClaim:
+          claimName: local-path-pvc
       containers:
-        - name: gecko
-          image: ghcr.io/facutk/gecko:0.0.20220329010301-ff1e6e3 # {"$imagepolicy": "flux-system:gecko"}
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "10m"
-            limits:
-              memory: "128Mi"
-              cpu: "250m"
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: volv
-              mountPath: /data
-          env:
-            - name: REDIS_HOST
-              value: redis
-            - name: REDIS_PORT
-              value: "6379"
-            - name: DB_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: DB_PATH_GECKO
-                  optional: false
-            - name: LITESTREAM_BUCKET
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: LITESTREAM_BUCKET
-                  optional: false
-            - name: LITESTREAM_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: LITESTREAM_PATH_GECKO
-                  optional: false
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: AWS_ACCESS_KEY_ID
-                  optional: false
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: AWS_SECRET_ACCESS_KEY
-                  optional: false
-            - name: FOO
-              valueFrom:
-                secretKeyRef:
-                  name: sops-secrets
-                  key: FOO
-          ports:
-            - containerPort: 8080
+      - name: gecko
+        image: ghcr.io/facutk/gecko:0.0.20220406030452-595af4a # {"$imagepolicy": "flux-system:gecko"}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: volv
+          mountPath: /data
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: DB_PATH
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: DB_PATH_GECKO
+              optional: false
+        - name: LITESTREAM_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: LITESTREAM_BUCKET
+              optional: false
+        - name: LITESTREAM_PATH
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: LITESTREAM_PATH_GECKO
+              optional: false
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: AWS_ACCESS_KEY_ID
+              optional: false
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: AWS_SECRET_ACCESS_KEY
+              optional: false
+        - name: FOO
+          valueFrom:
+            secretKeyRef:
+              name: sops-secrets
+              key: FOO
+        ports:
+        - containerPort: 8080
