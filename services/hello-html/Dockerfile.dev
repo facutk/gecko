@@ -1,0 +1,15 @@
+FROM node:lts-alpine
+RUN apk add bash
+WORKDIR /usr/src/app
+
+EXPOSE 8080
+
+# RUN chmod 777 /app
+# COPY ./index.html /usr/share/nginx/html/index.html
+# CMD [ "npx", "serve" ]
+# ENTRYPOINT ["npx", "serve"]
+COPY ./etc/docker-entrypoint.sh /etc/docker-entrypoint.sh
+ENTRYPOINT [ "/bin/bash", "/etc/docker-entrypoint.sh" ]
+# RUN chmod -R 777 ./
+# RUN ls -la
+# CMD [ "node", "index.js" ]
