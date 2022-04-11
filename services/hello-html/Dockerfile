@@ -18,4 +18,4 @@ EXPOSE 80
 # COPY ./index.html /usr/share/nginx/html/index.html
 
 COPY --from=builder /usr/src/app/build/ /usr/share/nginx/html
-# COPY ./etc/nginx.conf /etc/nginx/nginx.conf
+COPY ./etc/nginx.conf /etc/nginx/nginx.conf
